@@ -1,0 +1,29 @@
+program Test
+	var X, Y, Z
+	proc Sub1(A, B, C)
+		var X
+	proc Sub2()
+	var X
+	begin
+		X := 5;
+		Sub3()
+	end
+	proc Sub3()
+	begin
+		X := (7 . ((~X) . 3));
+		A := (1 . A);
+		Sub3() if A <> B
+	end
+	begin
+		X := 4;
+		Sub2();
+		Z := 11;
+		C := X;
+		Z := (Z . (6 . C))
+	end
+	begin
+		X := 13;
+		Y := 15;
+		Z := 16;
+		Sub1(X,Y,Z)
+	end

@@ -143,8 +143,8 @@ public class Sprol implements SprolConstants {
   Token t;
   Expression e1, e2;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case CONST:
-      t = jj_consume_token(CONST);
+    case INTEGER:
+      t = jj_consume_token(INTEGER);
     {if (true) return Expression.constant(t.image);}
       break;
     case ID:
@@ -262,7 +262,7 @@ public class Sprol implements SprolConstants {
   }
 
   static private boolean jj_3R_6() {
-    if (jj_scan_token(CONST)) return true;
+    if (jj_scan_token(INTEGER)) return true;
     return false;
   }
 
@@ -311,7 +311,7 @@ public class Sprol implements SprolConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x100,0x80,0x1000,0x80,0x80000,0x1000,0x3000,0x20000,0x800,0x1000000,0x1000,};
+      jj_la1_0 = new int[] {0x100,0x80,0x1000,0x80,0x80000,0x1000,0x9000,0x20000,0x800,0x1000000,0x1000,};
    }
   static final private JJCalls[] jj_2_rtns = new JJCalls[2];
   static private boolean jj_rescan = false;
