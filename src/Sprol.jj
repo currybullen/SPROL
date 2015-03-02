@@ -110,7 +110,7 @@ Expression expr():
   Expression e1, e2;
 }
 { 
-  t = <CONST>  // replace this one by the token representing your data type
+  t = <INTEGER>  // replace this one by the token representing your data type
   { return Expression.constant(t.image); }
   |
   t = <ID> { return Expression.variable(t.image); }

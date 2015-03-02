@@ -17,7 +17,7 @@ public class Proc {
     }
   
     public void execute() {
-        //htfrrsthrth
+        //
         // execute the statements of this procedure one by one
         // using exec_assignment(...) or exec_proc_call(...) depending
         // on the type of the respective statement.
@@ -33,6 +33,7 @@ public class Proc {
         //
         // fill in your code here to execute the assignment
         //
+        a.right_hand_side.eval();
     }
   
     private void execProcCall(ProcCall c) {
