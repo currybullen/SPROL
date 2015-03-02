@@ -1,0 +1,144 @@
+PARSER_BEGIN(Sprol)
+
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.util.Vector;
+
+public class Sprol {
+
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      System.err.println("wrong number of arguments");
+      return;
+    }
+    try {
+      Sprol parser = new Sprol(new FileReader(args[0]));
+      parser.program().execute();
+    }
+    catch (FileNotFoundException e) {
+      System.err.println("File `" + args[0] + "' not found");
+    }
+    catch (ParseException e) {
+      System.err.println("Parse Exception: " + e.getMessage());
+    }
+  }
+}
+  
+PARSER_END(Sprol)
+
+<*> SKIP :  // skip white space characters and //-comments
+{
+  " " | "\t" | "\n" | "\r" | < "//"(~["\n","\r"])* >
+}
+
+TOKEN:
+{ < PROGRAM: "program">
+| < PROC: "proc">
+| < VAR: "var">
+| < BEGIN: "begin" >
+| < END: "end" >
+| < IF: "if" >
+| < ID: ["A"-"Z"](["A"-"Z","a"-"z","0"-"9"])* >
+| < CONST: "<const>" >
+| < STRING: "\""(~["\""])*"\"" >
+| < INTEGER: ("-")?(["0"-"9"])+ >
+| < DECIMAL: <INTEGER>("."(<INTEGER>)?)? | "."<INTEGER> >
+}
+
+Program program():
+{
+  Token t;
+  Program result;
+}
+{
+  <PROGRAM>  t = <ID> { result = new Program(t.image); }
+  body(result)
+  { return result; }
+}
+
+Proc procedure(Proc parent):
+{
+  Token t;
+  Proc result;
+}
+{
+  <PROC>  t = <ID> { result = new Proc(t.image, parent); }
+  "(" identifier_list(result.formal_par) ")"
+  body(result)
+  { return result; }
+}
+
+void body(Proc p):
+{}
+{
+  [ <VAR> identifier_list(p.local_var) ]
+  [ subproc_decls(p) ]
+  <BEGIN>
+    [ statement_seq(p) ]
+  <END>
+}
+
+void subproc_decls(Proc p):
+{ Proc sub; }
+{
+  sub = procedure(p) { p.subproc.addElement(sub); }
+  ( sub = procedure(p) { p.subproc.addElement(sub); } )*
+}
+
+void statement_seq(Proc p):
+{}
+{ statement(p) ( ";" statement(p) )* }
+
+void statement(Proc p):
+{}
+{ LOOKAHEAD(2) assign(p) | call(p) }
+
+void assign(Proc p):
+{
+  Token t;
+  Expression e;
+  Assignment a;
+}
+{
+  t = <ID> ":=" e = expr()
+  { p.statement.addElement(a = new Assignment(t.image, e)); }
+}
+
+Expression expr():
+{
+  Token t;
+  Expression e1, e2;
+}
+{ 
+  t = <CONST>  // replace this one by the token representing your data type
+  { return Expression.constant(t.image); }
+  |
+  t = <ID> { return Expression.variable(t.image); }
+  |
+  LOOKAHEAD(2)
+  "(" e1 = expr() "." e2 = expr() ")" { return Expression.dotAppl(e1, e2); }
+  |
+  "(" "~" e1 = expr() ")" { return Expression.tildeAppl(e1); }
+}
+
+void call(Proc p):
+{
+  ProcCall c;
+  Token t1, t2;
+}
+{ t1 = <ID> { p.statement.addElement(c = new ProcCall(t1.image)); }
+  "(" identifier_list(c.actual_par) ")"
+  [ <IF> t1 = <ID> "<>" t2 = <ID> { c.setCondition(t1.image,t2.image); } ]
+}
+
+void identifier_list(Vector v):
+{}
+{
+  [ identifier(v) ( "," identifier(v) )* ]
+}
+
+void identifier(Vector v):
+{ Token t; }
+{
+  t = <ID> { v.addElement(t.image); }
+}
