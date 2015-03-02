@@ -17,7 +17,7 @@ public class Proc {
     }
   
     public void execute() {
-        //
+        //htfrrsthrth
         // execute the statements of this procedure one by one
         // using exec_assignment(...) or exec_proc_call(...) depending
         // on the type of the respective statement.
