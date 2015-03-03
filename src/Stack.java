@@ -27,6 +27,16 @@ public class Stack extends Vector<Stack.ActRecord> {
 		//
 		// fill in your code here
 		//
+
+		for (int i = st.size()-1; i >= 0; i--) {
+			System.err.println(i);
+			ActRecord v = st.elementAt(i);
+			if (v.getCellOf(name) != null) {
+				System.err.println("hejsan");
+				return v.getCellOf(name);
+			}
+		}
+
 		return null; // dummy return to be able to compile this version
 	}
 

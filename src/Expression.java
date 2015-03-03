@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.DISCARDING;
+
 public class Expression {
 
     private static final int CONSTANT = 0;
@@ -44,6 +46,17 @@ public class Expression {
         //
         // fill in your code here to evaluate this expression
         //
+        if (type == TILDE_APPLICATION) {
+
+            return Integer.valueOf(subexpr[0].toString()) * -1;
+        }
+
+        if (type == DOT_APPLICATION) {
+
+            return Integer.valueOf(subexpr[0].toString()) + Integer.valueOf(subexpr[1].toString());
+        }
+
+
         return null; // dummy return to be able to compile this version
     }
   

@@ -33,7 +33,7 @@ public class Proc {
         //
         // fill in your code here to execute the assignment
         //
-        a.right_hand_side.eval();
+       // a.right_hand_side.eval();
     }
   
     private void execProcCall(ProcCall c) {
