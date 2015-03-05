@@ -33,18 +33,21 @@ public class Proc {
         //
         // fill in your code here to execute the assignment
         //
-       // a.right_hand_side.eval();
+        Object[] stack = Stack.getCellOf(a.left_hand_side);
+        stack[0] = a.right_hand_side.eval();
     }
   
     private void execProcCall(ProcCall c) {
         //
         // fill in your code here to perform the procedure call
+
     }
   
     protected void initRecord(Vector<String> actual, int calling_depth) {
         //
         // fill in your code here to create and initialize an activation record
         //
+        Object[] stackobj = Stack.getCellOf(actual);
     }
   
 }
