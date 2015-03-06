@@ -46,16 +46,24 @@ public class Expression {
         //
         // fill in your code here to evaluate this expression
         //
+
+        if (type == CONSTANT) {
+            return Integer.valueOf(const_value);
+        }
+
+        if (type == VARIABLE) {
+            return Stack.getCellContentsOf(var_name);
+        }
+
         if (type == TILDE_APPLICATION) {
 
-            return Integer.valueOf(subexpr[0].toString()) * -1;
+            return ((Integer) Stack.getCellContentsOf(subexpr[0].var_name)) * -1;
         }
 
         if (type == DOT_APPLICATION) {
 
-            return Integer.valueOf(subexpr[0].toString()) + Integer.valueOf(subexpr[1].toString());
+            return (Integer) Stack.getCellContentsOf(subexpr[0].var_name) + (Integer) Stack.getCellContentsOf(subexpr[1].var_name);
         }
-
 
         return null; // dummy return to be able to compile this version
     }
