@@ -33,58 +33,39 @@ public class Proc {
         //
         // fill in your code here to execute the assignment
         //
-        System.err.println("Gör execassign på "+ a.left_hand_side + " till " + a.right_hand_side.eval());
         Stack.getCellOf(a.left_hand_side)[0] = a.right_hand_side.eval();
     }
-  
+
     private void execProcCall(ProcCall c) {
         //
         // fill in your code here to perform the procedure call
-        System.err.println("helkjarg");
-
 
 
         if ((c.condition_y == null) || !c.condition_y.equals(c.condition_y)) {
-            Boolean exists = false;
-            for (int i = 0; i < subproc.size(); i++) {
-                System.err.println(subproc.get(i).name + " " + c.name);
-
-                if (subproc.get(i).name.equals(c.name)) {
-
-                    exists = true;
-                    System.err.println("DEN FINNS");
-                }
-            }
-            if (exists) {
-                for (int i = 0; i < subproc.size(); i++) {
-                    System.err.println(subproc.get(i).name + " " + c.name);
-
-                    if (subproc.get(i).name.equals(c.name)) {
-                        Proc sub = subproc.get(i);
-                        sub.initRecord(c.actual_par, static_depth);
-                        sub.execute();
-                        Stack.deleteRecord();
-                        break;
-                    }
-                }
-
-            } else {
-                if (parent != null) parent.execProcCall(c);
-                else System.err.println("PARENT ÄR NULL");
-            }
-
+            Proc sub = revursive(this, c.name);
+            sub.initRecord(c.actual_par, static_depth - sub.static_depth + 1);
+            sub.execute();
+            Stack.deleteRecord();
         } else {
-            System.err.println("nu är det null eller lika");
             return;
         }
     }
-  
+
+    private Proc revursive(Proc pc, String name) {
+
+        for(int i = 0; i < pc.subproc.size(); i++) {
+            if(pc.subproc.get(i).name.equals(name)) {
+                return pc.subproc.get(i);
+            }
+        }
+
+        return revursive(pc.parent, name);
+    }
     protected void initRecord(Vector<String> actual, int calling_depth) {
         //
         // fill in your code here to create and initialize an activation record
         //
 
-        System.err.println("Gör init record\n");
         Stack.addRecord(calling_depth);
 
         for (int i = 0; i<actual.size(); i++){
